@@ -1,50 +1,60 @@
-#include <stdio.h>
-#include <math.h>
-double f(double x)
-{
-    return 1 / (1 + x * x);
+#include <stdio.h> 
+#include <math.h> 
+
+// Function to compute f(x)
+double f(double x) { 
+    return 1.0 / (1.0 + x * x); 
 }
-double simpsons_13(double a, double b, int n)
-{
-    if (n % 2 != 0)
-    {
-        printf("Number of intervals must be even.\n");
-        return -1;
-    }
-    double h = (b - a) / n, sum = f(a) + f(b);
-    printf("\nTable of values:\n");
-    printf("    x         f(x)    \n");
-    printf(" %7.4lf  %10.6lf \n", a, f(a));
-    for (int i = 1; i < n; i++)
-    {
-        double x = a + i * h;
-        if (i % 2 == 0)
-        {
-            sum += 2 * f(x);
+
+// Simpson's 1/3 Rule
+double simpson13(double a, double b, int n) { 
+    // Ensure n is even
+    if (n % 2 != 0) { 
+        n++;  // If n is odd, increment it
+    } 
+
+    double h = (b - a) / n;  // Step size
+    double sum = f(a) + f(b);  // Add f(a) and f(b) to sum
+
+    printf("\nSimpson's 1/3 Rule:\n");
+    
+    // Loop over each subinterval
+    for (int i = 1; i < n; i++) { 
+        double x = a + i * h;  // Compute x_i
+        double y = f(x);  // Compute f(x)
+        
+        // Apply Simpson's Rule (weight 4 for odd, 2 for even)
+        if (i % 2 == 0) { 
+            sum += 2 * y;  // Even index: weight 2
+        } else { 
+            sum += 4 * y;  // Odd index: weight 4
         }
-        else
-        {
-            sum += 4 * f(x);
-        }
-        printf(" %7.4lf  %10.6lf \n", x, f(x));
-    }
-    printf(" %7.4lf  %10.6lf \n", b, f(b));
-    return (h / 3) * sum;
+
+        // Print intermediate x and f(x) values
+        printf("x: %.4f, y: %.4f\n", x, y); 
+    } 
+
+    return sum * (h / 3);  // Return the result of the approximation
 }
-int main()
-{
+
+int main() { 
+    double a, b;  // Lower and upper limits of integration
+    int n;  // Number of subintervals
+
+    // User details
     printf("Name: MANSI AGARWAL \nRoll No: 11 \nSection: C\n\n");
-    double a, b;
-    int n;
-    printf("Enter the value of a (lower limit) = ");
-    scanf("%lf", &a);
-    printf("Enter the value of b (upper limit) = ");
-    scanf("%lf", &b);
-    printf("Enter the value of n (number of sub-intervals) = ");
-    scanf("%d", &n);
-    double result = simpsons_13(a, b, n);
-    if (result != -1)
-    {
-        printf("\nThe value of the integral is: %lf\n", result);
-    }
+
+    // User input for the limits and number of intervals
+    printf("Enter lower limit (a): "); 
+    scanf("%lf", &a); 
+    printf("Enter upper limit (b): "); 
+    scanf("%lf", &b); 
+    printf("Enter number of intervals (n): "); 
+    scanf("%d", &n); 
+
+    double result = simpson13(a, b, n); 
+
+    printf("\nFinal value using Simpson's 1/3 Rule: %.4f\n", result); 
+    
+    return 0; 
 }
