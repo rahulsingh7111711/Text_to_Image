@@ -1,1 +1,1 @@
-# MCBNST
+# Text to Image Generation
